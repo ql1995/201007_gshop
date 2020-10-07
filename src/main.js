@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App' // 引入自定义组件
 import 'lib-flexible/flexible'
 import router from "./router";
+import Header from "./components/Header/Header.vue"
+Vue.component('Header', Header)
 new Vue({
 
     // 注册局部组件

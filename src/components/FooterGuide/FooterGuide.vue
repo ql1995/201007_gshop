@@ -2,25 +2,25 @@
   <div class="footer-guide">
     <span class="guide-item " :class="{on:$route.path=='/msite'}" @click="goto('/msite')">
         <span>
-          <i class="iconfont iconicon-waimai"></i>
+          <i class="iconfont icon-waimai"></i>
         </span>
         <span>首页</span>
     </span>
     <span class="guide-item" :class="{on:$route.path=='/search'}" @click="goto('/search')">
         <span>
-          <i class="iconfont iconsearch"></i>
+          <i class="iconfont icon-search"></i>
         </span>
         <span>搜索</span>
     </span>
     <span class="guide-item" :class="{on:$route.path=='/order'}" @click="goto('/order')">
         <span>
-          <i class="iconfont iconicon-"></i>
+          <i class="iconfont icon-dingdan"></i>
         </span>
         <span>订单</span>
     </span>
     <span class="guide-item" :class="{on:$route.path=='/profile'}" @click="goto('/profile')">
         <span>
-          <i class="iconfont iconprofile"></i>
+          <i class="iconfont icon-geren"></i>
         </span>
         <span>个人</span>
     </span>
@@ -49,6 +49,7 @@ export default {
   bottom 0
   width 100%
   height 50px
+  background #ffffff
   .guide-item
     display flex
     flex-direction column
