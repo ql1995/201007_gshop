@@ -5,6 +5,8 @@ const px2rem = require('postcss-px2rem')
     //         remUnit: 37.5 //设计稿等分后的值
     //     })
     // vue.config.js
+
+
 module.exports = {
     css: {
         loaderOptions: {
@@ -37,14 +39,9 @@ module.exports = {
                 pathRewrite: {
                     '^/api': '' // 转发请求时去除路径前面的/api
                 },
-            },
-            '/gh': {
-                target: 'https://api.github.com', // 转发的目标地址
-                pathRewrite: {
-                    '^/gh': '' // 转发请求时去除路径前面的/api
-                },
                 changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
-            }
+            },
+
         },
     }
 }
