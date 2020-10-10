@@ -9,6 +9,7 @@
 */
 import axios from 'axios'
 import qs from 'qs'
+import { Indicator } from 'mint-ui'
 
 const instance = axios.create({
         baseURL: '/api',
@@ -18,6 +19,7 @@ const instance = axios.create({
 );
 /* 请求拦截器 */
 instance.interceptors.request.use((config) => {
+        Indicator.open();
         console.log('request interceptors');
         const data = config.data
             // 3. 对请求体参数进行urlencode处理, 而不使用默认的json方式(后台接口不支持)
@@ -28,10 +30,13 @@ instance.interceptors.request.use((config) => {
     })
     /* 响应拦截器 */
 instance.interceptors.response.use(response => {
+        Indicator.close();
         console.log('response interceptors');
-        return response
+
+        return response.data
     },
     error => {
+        Indicator.close();
         alert(error.message)
         return new Promise(() => {}) // 返回一个pending状态的promise => 中断promie链
     }

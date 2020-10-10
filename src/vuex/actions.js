@@ -8,24 +8,26 @@ export default {
     //获取当前位置的地址信息
 
     async getAddress({ state, commit }) {
+        // console.log(commit);
         const { latitude, longitude } = state;
         //发送异步请求
         const result = await reqAddress(latitude, longitude);
+        console.log(result);
 
-        console.log(result.data.code == 0);
-        if (result.data.code == 0) {
+        if (result.code == 0) {
             console.log(1);
             //请求成功后，提交给mutation
             commit(RECEIVE_ADDRESS, result.data)
         }
     },
     //获取当前位置的食品分类信息
-    async getCategorys({ commit }) {
+    async getCategorys({ commit }, callback) {
         //发送异步请求
         const result = await reqCategorys();
         if (result.code == 0) {
             //请求成功后，提交给mutation
             commit(RECEIVE_CATEGORYS, result.data)
+            typeof callback === 'function' && callback()
         }
     },
     //获取当前位置的商家信息

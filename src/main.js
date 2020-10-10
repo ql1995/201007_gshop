@@ -4,6 +4,7 @@ import 'lib-flexible/flexible'
 import router from "./router";
 import Header from "./components/Header/Header.vue"
 import store from './vuex/store'
+import './validate'
 Vue.component('Header', Header)
 new Vue({
 

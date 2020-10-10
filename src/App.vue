@@ -13,6 +13,7 @@ export default {
   },
   async mounted(){ 
   this.$store.dispatch('getAddress')
+  console.log(this.$store);
   }
 }
 
