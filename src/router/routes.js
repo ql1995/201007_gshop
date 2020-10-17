@@ -3,6 +3,11 @@ import Order from "@/pages/Order/Order.vue";
 import Profile from "@/pages/Profile/Profile.vue";
 import Search from "@/pages/Search/Search.vue";
 import Login from "@/pages/Login/Login.vue";
+import Shop from "@/pages/Shop/Shop";
+import Goods from "@/pages/Shop/Children/Goods";
+import Ratings from "@/pages/Shop/Children/Ratings";
+import Info from "@/pages/Shop/Children/Info";
+
 export default [{
         path: '/msite',
         component: MSite,
@@ -38,5 +43,28 @@ export default [{
     {
         path: '/login',
         component: Login
+    },
+    {
+        path: '/shop',
+        component: Shop,
+        children:[
+           {
+            path: '/shop/goods',
+            component: Goods
+           },
+           {
+            path: '/shop/ratings',
+            component: Ratings
+           },
+           {
+            path: '/shop/info',
+            component: Info
+           },
+           {
+            path: '',
+            redirect:'/shop/goods'
+           },
+          
+        ]
     }
 ]

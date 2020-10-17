@@ -47,23 +47,28 @@
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" name="captcha"
                   v-validate="{required: true,regex: /^[0-9a-zA-Z]{4}$/}">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <!-- http跨域 ajax没有跨域 -->
+                <img class="get_verification" @click="updateCaptcha"
+                 src="http://localhost:4000/captcha" alt="captcha" ref="captcha">
+                <!-- <img class="get_verification" src="/api/captcha" alt="captcha"> -->
                 <span style="color: red;" v-show="errors.has('captcha')">{{ errors.first('captcha') }}</span>
               </section>
             </section>
           </div>
-          <button class="login_submit" @click.prevent="login">登录</button>
+          <button class="login_submit" @click.prevent="login">{{$t('login_login')}}</button>
         </form>
-        <a href="javascript:;" class="about_us">关于我们</a>
+        <a href="javascript:;" class="about_us">{{$t('login_aboutUs')}}</a>
       </div>
-      <a href="javascript:" class="go_back" @click="$router.back()">
+      <a href="javascript:" class="go_back" @click="$router.replace('/profile')">
         <i class="iconfont icon-jiantou2"></i>
       </a>
+      <button @click="toggleLanguage">切换语言</button>
     </div>
   </section>
 </template>
 
 <script type="text/ecmascript-6">
+import { Toast, MessageBox } from "mint-ui";
   export default {
     data() {
       return {
@@ -85,17 +90,63 @@
 
     },
     methods: {
-      sendCode() {
-        this.computeTime=10;
-      const IntervalId= setInterval(()=>{
-          this.computeTime--;
-          if(this.computeTime===0){
-            clearInterval(IntervalId)
+      async sendCode() {
+          this.computeTime=10;
+          const IntervalId= setInterval(()=>{
+            this.computeTime--;
+            if(this.computeTime===0){
+              clearInterval(IntervalId)
+            }
+          },1000);
+          //发送请求
+          const result = await this.$API.reqSendCode(this.phone)
+          if(result.code===0){
+            Toast('验证码短信已发送');
+          }else{
+            // 停止倒计时
+            this.computeTime=0;
+            MessageBox('提示',result.msg||'发送失败')
           }
-        },1000);
+          
       },
       async login() {
-
+        // 前台表单验证
+        let names;
+        if(this.loginWay){//为短信登录
+          names=['phone','code']
+        }else{
+          names=['name','pwd','captcha']
+        }
+        // 对指定的所有表单项进行验证
+        const success=await this.$validator.validateAll(names);
+        const{loginWay,name,pwd,captcha,phone,code}=this
+        let result
+        if(success){
+          if(loginWay){
+             result= await this.$API.reqSmsLogin({phone,code});
+          }else{
+             result= await this.$API.reqPwdLogin({name,pwd,captcha});
+            this.updateCaptcha();
+             this.captcha=''
+          }
+          if(result.code==0){
+            this.$store.dispatch('saveUser',result.data)
+            this.$router.replace({path:'/profile'})
+          }else{
+            MessageBox('提示',result.msg||'登录失败')
+          }
+        }
+      },
+      updateCaptcha(){
+        this.$refs.captcha.src='http://localhost:4000/captcha?time='+Date.now();
+      },
+       toggleLanguage () {
+        // 根据当前语言得到新的语言
+        const locale = this.$i18n.locale==='en' ? 'zh_CN' : 'en'
+        // 指定新的语言
+        this.$i18n.locale = locale
+        // 将新的语言保存到local
+        localStorage.setItem('locale_key', locale)
       }
     }
   }

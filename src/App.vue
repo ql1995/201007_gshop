@@ -13,7 +13,7 @@ export default {
   },
   async mounted(){ 
   this.$store.dispatch('getAddress')
-  console.log(this.$store);
+  this.$store.dispatch('autoLogin')//加载的时候就去执行是否有token
   }
 }
 

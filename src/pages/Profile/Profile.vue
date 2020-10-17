@@ -7,12 +7,12 @@
               <i class="iconfont icon-person"></i>
             </div>
             <div class="user-info">
-              <p class="user-info-top" @click="$router.push('/login')">登录/注册</p>
-              <p>
+              <p v-if="!user.phone" class="user-info-top" @click="$router.push(user._id ?'/userinfo':'/login')">{{user.name?user.name:'登录/注册'}}</p>
+              <p v-if="!user.name">
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-                <span class="icon-mobile-number">暂无绑定手机号</span>
+                <span class="icon-mobile-number">{{user.phone?user.phone:'暂无绑定手机号'}}</span>
               </p>
             </div>
             <span class="arrow">
@@ -88,18 +88,40 @@
             </div>
           </a>
         </section>
+        <section class="profile_my_order border-1px" v-show="user._id">
+         <!-- 退出登录 -->
+         <mt-button type="danger" style="width:100%" @click="logout">退出登录</mt-button>
+        </section>
       </section>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
+import { mapState } from "vuex";
+import { MessageBox } from "mint-ui";
 
+export default {
+  computed:{
+    ...mapState(['user'])//声明在计算属性里面
+  },
+  methods:{
+     logout () {
+        MessageBox.confirm('确定执行此操作?').then(
+          ()=>{//确认的回调
+            this.$store.dispatch('logout')
+          },
+          ()=>{//取消的回调
+            console.log('我取消了');
+          }
+        );
+    }
+  }
 }
 
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
 @import '../../common/stylus/mixins.styl'
 .profile //我的
+  overflow hidden
   width 100%
   .profile-number
     margin-top 45.5px

@@ -36,7 +36,7 @@
       </div>
       <div class="shop_container">
         <ul class="shop_list" v-if="shops.length>0">
-          <li class="shop_li border-1px"  v-for="(shop) in shops" :key="shop.id">
+          <li class="shop_li border-1px" @click="$router.push('/shop')" v-for="(shop) in shops" :key="shop.id" >
             <a>
               <div class="shop_left">
                 <img class="shop_img" :src="'https://fuss10.elemecdn.com'+shop.image_path">
@@ -51,7 +51,7 @@
                 </section>
                 <section class="shop_rating_order">
                   <section class="shop_rating_order_left">
-                    
+                    <Star :score="shop.rating" :size="24"></Star>
                     <div class="rating_section">
                       {{shop.rating}}
                     </div>

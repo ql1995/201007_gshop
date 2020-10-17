@@ -19,6 +19,7 @@ module.exports = {
             }
         }
     },
+
     configureWebpack: { //webpack原生配置
         // 引入模块的解析
         resolve: {
@@ -30,6 +31,7 @@ module.exports = {
             }
         }
     },
+
     devServer: {
         proxy: {
             // 处理以/api开头路径的请求
@@ -43,5 +45,14 @@ module.exports = {
             },
 
         },
+    },
+
+    pluginOptions: {
+      i18n: {
+        locale: 'zh_CN',
+        fallbackLocale: 'en',
+        localeDir: 'locales',
+        enableInSFC: false
+      }
     }
 }
