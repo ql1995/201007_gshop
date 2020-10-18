@@ -125,7 +125,9 @@ import { mapState } from "vuex";
       }
     },
 		computed:{
-		...mapState(['info'])
+		...mapState({
+      info:state=>state.shop.info
+    })
 	}
 	}
   

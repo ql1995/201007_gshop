@@ -100,7 +100,11 @@ import {mapState } from "vuex";
 import chunk from 'lodash/chunk' //按需引入，优化打包文件
   export default{
     computed:{
-      ...mapState(['address','shops','categorys']),//读取数据
+      ...mapState({
+        address:state=>state.msite.address,
+        shops:state=>state.msite.shops,
+        categorys:state=>state.msite.categorys
+      }),//读取数据
       //一维数组转换为二维数组
       categorysArr(){
         const {categorys}=this

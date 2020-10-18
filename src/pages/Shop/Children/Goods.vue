@@ -67,7 +67,9 @@ export default {
     }
   },
   computed:{
-    ...mapState(['goods']),
+    ...mapState({
+      goods: state=>state.shop.goods
+    }),
     currentIndex:{
       get:function(){
         const{scrollY,tops}=this;

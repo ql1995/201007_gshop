@@ -101,7 +101,9 @@ import { MessageBox } from "mint-ui";
 
 export default {
   computed:{
-    ...mapState(['user'])//声明在计算属性里面
+    ...mapState({
+      user:state=>state.user.user
+    })//声明在计算属性里面
   },
   methods:{
      logout () {
