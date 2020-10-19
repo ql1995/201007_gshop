@@ -12,8 +12,14 @@ import ShopHeader from '@/components/ShopHeader/ShopHeader'
 import CartControl from '@/components/CartControl/CartControl'
 import i18n from './i18n'
 import './mock/mock-server'
+import VueLazyload from 'vue-lazyload'
+import loading from '@/common/images/loading.gif'
 // 将API对象挂载到Vue的原型对象上
 Vue.prototype.$API=API;
+//图片懒加载
+Vue.use(VueLazyload,{
+    loading  
+})
 //注册全局组件
 Vue.component('Header', Header)
 Vue.component('Star', Star)

@@ -45,6 +45,7 @@
             </li>
           </ul>
         </div>
+        <ShopCart/>
     </div>
     <Food :food="food" ref="food"/>
 </div>
@@ -52,10 +53,12 @@
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll'
 import Food from "@/components/Food/Food"
+import ShopCart from "@/components/ShopCart/ShopCart"
 import { mapState } from "vuex";
 export default {
   components:{
-    Food
+    Food,
+    ShopCart
   },
   data(){
     return{
@@ -85,21 +88,26 @@ export default {
   },
   methods:{
     _initScroll(){
-      this.leftScroll= new BScroll(this.$refs.left,{
-        click:true
-      })
-       this.rightScroll= new BScroll(this.$refs.right,{
-          probeType:1,
+      if(!this.leftScroll){
+          this.leftScroll= new BScroll(this.$refs.left,{
           click:true
-      });
-     this.rightScroll.on('scroll',({x,y})=>{
-        console.log('scroll',x,y);
-        this.scrollY=Math.abs(y)
-      });
-     this.rightScroll.on('scrollEnd',({x,y})=>{
-        console.log('scroll',x,y);
-        this.scrollY = Math.abs(y)
-      })
+        })
+        this.rightScroll= new BScroll(this.$refs.right,{
+            probeType:1,
+            click:true
+        });
+        this.rightScroll.on('scroll',({x,y})=>{
+            console.log('scroll',x,y);
+            this.scrollY=Math.abs(y)
+          });
+        this.rightScroll.on('scrollEnd',({x,y})=>{
+            console.log('scroll',x,y);
+            this.scrollY = Math.abs(y)
+          })
+      }else{
+        this.leftScroll.refresh()
+        this.rightScroll.refresh()
+      }
     },
      /* 
       统计右侧所有分类li的top的数组

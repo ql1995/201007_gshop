@@ -3,7 +3,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_INFO,
   ADD_FOOD_COUNT,
-  REDUCE_FOOD_COUNT
+  REDUCE_FOOD_COUNT,
+  CLEAR_CART
   } from "../mutation-types";
   import Vue from 'vue'
   import {reqGoods,reqRatings,reqInfo } from "@/api";
@@ -11,7 +12,8 @@ export default{
   state:{
     goods:[],
     ratings:[],
-    info:{}
+    info:{},
+    cartFoods:[]
   },
   mutations:{
     [RECEIVE_GOODS](state,{goods}) {
@@ -30,13 +32,23 @@ export default{
             food.count++
         }else{
             Vue.set(food,'count',1)
+            state.cartFoods.push(food)
         }
     },
     [REDUCE_FOOD_COUNT](state,{food}) {
         if(food.count>0){
             food.count--
+            if(food.count===0){
+                state.cartFoods.splice(state.cartFoods.indexOf(food),1)
+            }
         }
     },
+    [CLEAR_CART](state){
+        //数量归0
+        state.cartFoods.forEach(food=>food.count=0)
+        //重置购物车
+        state.cartFoods=[]
+    }
   },
   actions:{
       async getShopGoods({commit}){
@@ -71,5 +83,16 @@ export default{
         }
     }
   },
-  getters:{}
+  getters:{
+      totalCount(state){
+          return state.cartFoods.reduce((pre,food)=> {
+             return  pre+food.count
+            },0)
+      },
+      totalPrice(state){
+          return state.cartFoods.reduce((pre,food)=>{
+            return  pre+food.count*food.price
+            },0)
+      }
+  }
 }
